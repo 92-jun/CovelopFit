@@ -26,8 +26,7 @@ import java.util.UUID;
 public class OrderService {
    public boolean postOrder(PostOrderDto postOrderDto){
 
-       String accessKey = "LV3YNAy5ntWxKzBlliqfRVUxTTxXE9y9R8AWzvJ8";
-       String secretKey = "Ymso9yluPePct2UXGozLelMKujnTWxIoTWKWAxlm";
+
        String serverUrl = "https://api.upbit.com/v1/orders";
 
        HashMap<String, String> params = new HashMap<>();
