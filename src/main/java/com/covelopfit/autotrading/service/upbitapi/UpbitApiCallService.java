@@ -15,6 +15,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -31,13 +33,19 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@PropertySource(ignoreResourceNotFound = false, value = "classpath:application_api_key.properties")
 public class UpbitApiCallService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private final static String accessKey = "";
-    private final static String secretKey = "";
-    private final static String serverUrl = "";
+    @Value("${upbit.api.accessKey}")
+    private String accessKey;
+
+    @Value("${upbit.api.secretKey}")
+    private String secretKey;
+
+    @Value("${upbit.api.serverUrl}")
+    private String serverUrl;
 
     public OrderApiResponse callUpbitOrderApi(OrderApiRequest orderApiRequest) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
