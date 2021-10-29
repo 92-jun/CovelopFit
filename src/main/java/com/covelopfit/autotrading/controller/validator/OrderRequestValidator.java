@@ -1,10 +1,8 @@
 package com.covelopfit.autotrading.controller.validator;
 
 import com.covelopfit.autotrading.domain.upbitapi.OrderApiRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-@Component
 public class OrderRequestValidator {
 
     public static String checkOrderApiRequest(OrderApiRequest orderApiRequest) {
