@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequestMapping(value = "/order", produces = {"application/json"})
 public class OrderController {
@@ -22,8 +25,8 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/marketBuy")
-    public ResponseEntity postOrder(@RequestBody PostOrderDto postOrderDto){
+    @PostMapping("")
+    public ResponseEntity postOrder(@RequestBody @Valid PostOrderDto postOrderDto) throws NoSuchAlgorithmException {
 
         boolean flag = orderService.postOrder(postOrderDto);
 
