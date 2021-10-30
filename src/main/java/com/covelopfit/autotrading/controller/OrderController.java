@@ -2,6 +2,7 @@ package com.covelopfit.autotrading.controller;
 import com.covelopfit.autotrading.domain.Member;
 import com.covelopfit.autotrading.domain.UpbitKey;
 import com.covelopfit.autotrading.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@Slf4j
 @Controller
 public class OrderController {
 
@@ -25,14 +27,17 @@ public class OrderController {
         return "order-page";
     }
 
-    @PostMapping("buy-order")
-    public String buyOrder(OrderForm form) throws IOException, NoSuchAlgorithmException {
+    @PostMapping("order")
+    public String orderApi(OrderForm form) throws IOException, NoSuchAlgorithmException {
 
         Member member = new Member();
         UpbitKey upbitKey = new UpbitKey();
 
         member.setKey(upbitKey);
         member.setName("taewoo");
+
+        if(!ValidateParams.checkValidation(form).equals("정상"))
+            log.error("Parameter validation error");
 
         HashMap<String, String> params = new HashMap<>();
         params.put("market", form.getMarket());
