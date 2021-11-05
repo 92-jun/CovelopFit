@@ -23,7 +23,6 @@ public class PostOrderDto {
     private String market;
 
     @NotBlank
-
     @Description("Order Type Value. 1. bid = buy , 2. ask = sell ")
     @Pattern(regexp = "^[a-zA-Z]*$")
     private String side;

@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public ResponseEntity postOrder(@RequestBody @Valid PostOrderDto postOrderDto) throws NoSuchAlgorithmException {
+    public ResponseEntity postOrder(@RequestBody @Valid PostOrderDto postOrderDto) {
 
         boolean flag = orderService.postOrder(postOrderDto);
 

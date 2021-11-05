@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Service
 public class OrderService {
-   public boolean postOrder(PostOrderDto postOrderDto) throws NoSuchAlgorithmException {
+   public boolean postOrder(PostOrderDto postOrderDto){
 
 
        String serverUrl = "https://api.upbit.com/v1/orders";
@@ -45,12 +45,13 @@ public class OrderService {
        String queryString = String.join("&", queryElements.toArray(new String[0]));
 
 
-
-
        try {
+
+
            MessageDigest md;
            md = MessageDigest.getInstance("SHA-512");
            md.update(queryString.getBytes("UTF-8"));
+
            String queryHash = String.format("%0128x", new BigInteger(1, md.digest()));
 
            Algorithm algorithm = Algorithm.HMAC256(secretKey);
@@ -73,7 +74,9 @@ public class OrderService {
 
            System.out.println(EntityUtils.toString(entity, "UTF-8"));
        } catch (IOException | NoSuchAlgorithmException e) {
+
            e.printStackTrace();
+
        }
 
        return true;
