@@ -24,7 +24,8 @@ import java.util.UUID;
 
 @Service
 public class OrderService {
-   public boolean postOrder(PostOrderDto postOrderDto){
+
+    public boolean postOrder(PostOrderDto postOrderDto){
 
 
        String serverUrl = "https://api.upbit.com/v1/orders";
