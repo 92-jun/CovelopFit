@@ -36,8 +36,10 @@ public class OrderController {
         member.setKey(upbitKey);
         member.setName("taewoo");
 
-        if(!ValidateParams.checkValidation(form).equals("정상"))
+        if(!ValidateParams.checkValidation(form).equals("정상")) {
             log.error("Parameter validation error");
+            return "redirect:/";
+        }
 
         HashMap<String, String> params = new HashMap<>();
         params.put("market", form.getMarket());
