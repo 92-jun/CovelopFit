@@ -23,11 +23,17 @@ public class OrderControllerTest {
 
     @Test
     void givenValidParameterWhenPostOrderThen201(){
+
         PostOrderTestData postOrderTestData = new PostOrderTestData("KRW-BTC","bid","1","10000","limit",accessKey,secretKey);
+
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/order").build();
+
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         HttpEntity<String> request = new HttpEntity<>(postOrderTestData.getJsonString(),headers);
+
         ResponseEntity<String> response = restTemplate.postForEntity(uriComponents.toString(),request, String.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }
