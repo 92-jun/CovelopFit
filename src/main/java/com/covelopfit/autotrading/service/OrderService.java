@@ -2,7 +2,9 @@ package com.covelopfit.autotrading.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.covelopfit.autotrading.dto.PostOrderDto;
+import com.covelopfit.autotrading.dto.OrderApiResponse;
+import com.covelopfit.autotrading.dto.OrderForm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,30 +27,40 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@PropertySource(ignoreResourceNotFound = false, value = "classpath:application_api_key.properties")
 public class OrderService {
 
-    public boolean postOrder(PostOrderDto postOrderDto){
+    private ObjectMapper objectMapper = new ObjectMapper();
 
+    @Value("${upbit.api.accessKey}")
+    private String accessKey;
 
-       String serverUrl = "https://api.upbit.com/v1/orders";
-       String secretKey = postOrderDto.getSecretKey();
-       String accessKey = postOrderDto.getAccessKey();
-       HashMap<String, String> params = new HashMap<>();
-       params.put("market", postOrderDto.getMarket());
-       params.put("side", postOrderDto.getSide());
-       params.put("volume", postOrderDto.getVolume());
-       params.put("price", postOrderDto.getPrice());
-       params.put("ord_type", postOrderDto.getOrd_type());
+    @Value("${upbit.api.secretKey}")
+    private String secretKey;
 
-       ArrayList<String> queryElements = new ArrayList<>();
-       for(Map.Entry<String, String> entity : params.entrySet()) {
+    @Value("${upbit.api.serverUrl}")
+    private String serverUrl;
+
+    public OrderApiResponse postOrder(OrderForm orderForm){
+
+        OrderApiResponse result = new OrderApiResponse();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("market", orderForm.getMarket());
+        params.put("side", orderForm.getSide());
+        params.put("volume", orderForm.getVolume());
+        params.put("price", orderForm.getPrice());
+        params.put("ord_type", orderForm.getOrd_type());
+
+        ArrayList<String> queryElements = new ArrayList<>();
+        for(Map.Entry<String, String> entity : params.entrySet()) {
            queryElements.add(entity.getKey() + "=" + entity.getValue());
-       }
+        }
 
-       String queryString = String.join("&", queryElements.toArray(new String[0]));
+        String queryString = String.join("&", queryElements.toArray(new String[0]));
 
 
-       try {
+        try {
 
 
            MessageDigest md;
@@ -73,13 +87,14 @@ public class OrderService {
            HttpResponse response = client.execute(request);
            HttpEntity entity = response.getEntity();
 
-           System.out.println(EntityUtils.toString(entity, "UTF-8"));
-       } catch (IOException | NoSuchAlgorithmException e) {
 
-           e.printStackTrace();
+           result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
+        } catch (IOException | NoSuchAlgorithmException e) {
 
-       }
+            e.printStackTrace();
+            return null;
+        }
 
-       return true;
+        return result;
    }
 }

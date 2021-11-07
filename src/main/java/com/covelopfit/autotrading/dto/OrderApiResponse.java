@@ -1,4 +1,4 @@
-package com.covelopfit.autotrading.domain.upbitapi;
+package com.covelopfit.autotrading.dto;
 
 import lombok.Data;
 

@@ -15,7 +15,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostOrderDto {
+public class OrderForm {
 
     @NotBlank
     @Description("Coin Name. Ex) KRW-BTC Format.")
@@ -42,11 +42,6 @@ public class PostOrderDto {
     @Description("Order Type.   1. limit(지정가주문) 2. price(시장가 매수 주문) 3. market(시장가 매도 주문)")
     @Pattern(regexp = "^[a-zA-Z]*$")
     private String ord_type;
-
-    @NotBlank
-    private String accessKey;
-    @NotBlank
-    private String secretKey;
 
 
 }
