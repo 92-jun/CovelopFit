@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +23,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping("order-page")
+    public String getOrderPage(){
+        return "order-page";
+    }
+
     @PostMapping("")
     public ResponseEntity postOrder(@RequestBody @Valid PostOrderDto postOrderDto) {
 
@@ -39,4 +41,29 @@ public class OrderController {
 
     }
 
+    @PostMapping("orders")
+    public String orderApi(OrderForm form) throws IOException, NoSuchAlgorithmException {
+
+        Member member = new Member();
+        UpbitKey upbitKey = new UpbitKey();
+
+        member.setKey(upbitKey);
+        member.setName("taewoo");
+
+        if(!ValidateParams.checkValidation(form).equals("정상")) {
+            log.error("Parameter validation error");
+            return "redirect:/";
+        }
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("market", form.getMarket());
+        params.put("side", form.getSide());
+        params.put("volume", form.getVolume());
+        params.put("price", form.getPrice());
+        params.put("ord_type", form.getOrd_type());
+
+        orderService.orderLimitPrice(member, params);
+
+        return "redirect:/";
+    }
 }
