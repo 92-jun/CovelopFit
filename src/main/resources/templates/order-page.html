@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    order-page
+    <form action="/order" method="post"> <div class="form-group">
+        <label for="market">코인 종류</label>
+        <input type="text" id="market" name="market" placeholder="이름을 입력하세요">
+        <label for="side">주문 종류</label>
+        <input type="text" id="side" name="side" placeholder="이름을 입력하세요">
+        <label for="volume">주문 수량</label>
+        <input type="text" id="volume" name="volume" placeholder="이름을 입력하세요">
+        <label for="price">호가</label>
+        <input type="text" id="price" name="price" placeholder="이름을 입력하세요">
+        <label for="ord_type">주문 타입</label>
+        <input type="text" id="ord_type" name="ord_type" placeholder="이름을 입력하세요"> </div>
+        <button type="submit">주문!!</button>
+    </form>
+</body>
+</html>
