@@ -2,6 +2,7 @@ package com.covelopfit.autotrading.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.covelopfit.autotrading.common.ResponseCode;
 import com.covelopfit.autotrading.dto.OrderApiResponse;
 import com.covelopfit.autotrading.dto.OrderForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Service
 @PropertySource(ignoreResourceNotFound = false, value = "classpath:application_api_key.properties")
-public class OrderService {
+public class OrderService extends BaseService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -89,9 +89,10 @@ public class OrderService {
 
 
            result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException | NoSuchAlgorithmException | IllegalArgumentException e) {
 
-            e.printStackTrace();
+            setResponseCode(ResponseCode.INTERNAL_SERVER_ERROR);
+            setErrorMessage("서버에서의 에러 : " + e.getMessage());
             return null;
         }
 
