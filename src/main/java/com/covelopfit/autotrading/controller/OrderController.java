@@ -30,7 +30,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "order")
-    public ResponseEntity postOrder(@ModelAttribute @Valid OrderForm orderForm) {
+    public ResponseEntity postOrder(@ModelAttribute @Valid OrderForm orderForm) throws Exception {
 
         OrderApiResponse orderApiResponse = orderService.postOrder(orderForm);
 
