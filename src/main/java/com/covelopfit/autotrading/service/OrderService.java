@@ -41,7 +41,7 @@ public class OrderService {
     @Value("${upbit.api.serverUrl}")
     private String serverUrl;
 
-    public OrderApiResponse postOrder(OrderForm orderForm){
+    public OrderApiResponse postOrder(OrderForm orderForm) throws Exception {
 
         OrderApiResponse result = new OrderApiResponse();
 
@@ -61,8 +61,6 @@ public class OrderService {
 
 
         try {
-
-
            MessageDigest md;
            md = MessageDigest.getInstance("SHA-512");
            md.update(queryString.getBytes("UTF-8"));
@@ -89,10 +87,8 @@ public class OrderService {
 
 
            result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
-        } catch (IOException | NoSuchAlgorithmException e) {
-
-            e.printStackTrace();
-            return null;
+        } catch (IOException | NoSuchAlgorithmException | IllegalArgumentException e) {
+            throw e;
         }
 
         return result;
