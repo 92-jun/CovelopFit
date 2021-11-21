@@ -62,7 +62,6 @@ public class OrderService extends BaseService {
 
         try {
 
-
            MessageDigest md;
            md = MessageDigest.getInstance("SHA-512");
            md.update(queryString.getBytes("UTF-8"));
@@ -89,10 +88,7 @@ public class OrderService extends BaseService {
 
 
            result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
-        } catch (IOException | NoSuchAlgorithmException | IllegalArgumentException e) {
-
-            setResponseCode(ResponseCode.INTERNAL_SERVER_ERROR);
-            setErrorMessage("서버에서의 에러 : " + e.getMessage());
+        } catch (IOException | NoSuchAlgorithmException e) {
             return null;
         }
 

@@ -35,14 +35,10 @@ public class OrderController {
         OrderApiResponse orderApiResponse = orderService.postOrder(orderForm);
 
         if(orderApiResponse == null){
-            log.error("[OrderAPI] parameter validation fail");
-            return getErrorResponse();
+            return ResponseEntity.unprocessableEntity().build();
         }
         return ResponseEntity.ok().body(orderApiResponse);
 
     }
 
-    private ResponseEntity getErrorResponse() {
-        return new ResponseEntity<>(orderService.getErrorResponseJson(), HttpStatus.valueOf(orderService.getResponseCode().getStatus()));
-    }
 }
