@@ -79,16 +79,19 @@ public class OrderService {
 
            String authenticationToken = "Bearer " + jwtToken;
            HttpClient client = HttpClientBuilder.create().build();
-           HttpPost request = new HttpPost(serverUrl);
+           HttpPost request = new HttpPost(serverUrl + "/v1/orders");
            request.setHeader("Content-Type", "application/json");
            request.addHeader("Authorization", authenticationToken);
            request.setEntity(new StringEntity(new Gson().toJson(params)));
 
            HttpResponse response = client.execute(request);
+           if (response.getStatusLine().getStatusCode() != 200) {
+               return null;
+           }
+
            HttpEntity entity = response.getEntity();
-
-
            result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
+
         } catch (IOException | NoSuchAlgorithmException e) {
 
             e.printStackTrace();

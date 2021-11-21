@@ -19,12 +19,12 @@ public class OrderForm {
 
     @NotBlank
     @Description("Coin Name. Ex) KRW-BTC Format.")
-    @Pattern(regexp = "^[a-zA-Z]*$[.-]?^[a-zA-Z]*$")
+    @Pattern(regexp = "^[A-Z]+[-]?[0-9A-Z]+$")
     private String market;
 
     @NotBlank
     @Description("Order Type Value. 1. bid = buy , 2. ask = sell ")
-    @Pattern(regexp = "^[a-zA-Z]*$")
+    @Pattern(regexp = "^[a-z]+$")
     private String side;
 
 
@@ -40,7 +40,7 @@ public class OrderForm {
 
     @NotBlank
     @Description("Order Type.   1. limit(지정가주문) 2. price(시장가 매수 주문) 3. market(시장가 매도 주문)")
-    @Pattern(regexp = "^[a-zA-Z]*$")
+    @Pattern(regexp = "^[a-z]+$")
     private String ord_type;
 
 
