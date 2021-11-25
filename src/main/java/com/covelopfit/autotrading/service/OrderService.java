@@ -85,7 +85,7 @@ public class OrderService {
            request.setEntity(new StringEntity(new Gson().toJson(params)));
 
            HttpResponse response = client.execute(request);
-           if (response.getStatusLine().getStatusCode() != 200) {
+           if (response.getStatusLine().getStatusCode() != 201) {
                return null;
            }
 
