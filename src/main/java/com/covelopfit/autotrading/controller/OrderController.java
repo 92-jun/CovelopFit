@@ -1,5 +1,6 @@
 package com.covelopfit.autotrading.controller;
 
+import com.covelopfit.autotrading.dto.BaseResponse;
 import com.covelopfit.autotrading.dto.OrderApiResponse;
 import com.covelopfit.autotrading.dto.OrderForm;
 import com.covelopfit.autotrading.service.OrderService;
@@ -27,14 +28,14 @@ public class OrderController {
 
     @PostMapping(value = "order")
     @ResponseBody
-    public ResponseEntity postOrder(@ModelAttribute @Valid OrderForm orderForm) {
+    public BaseResponse postOrder(@ModelAttribute @Valid OrderForm orderForm) {
         log.debug(orderForm.toString());
         OrderApiResponse orderApiResponse = orderService.postOrder(orderForm);
 
         if(orderApiResponse == null){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR, "OrderService 내 에러 or API 실패");
         }
 
-        return new ResponseEntity(orderApiResponse, HttpStatus.OK);
+        return new BaseResponse(HttpStatus.OK, "성공", orderApiResponse);
     }
 }
