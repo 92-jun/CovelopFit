@@ -12,7 +12,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -79,16 +78,19 @@ public class OrderService {
 
            String authenticationToken = "Bearer " + jwtToken;
            HttpClient client = HttpClientBuilder.create().build();
-           HttpPost request = new HttpPost(serverUrl);
+           HttpPost request = new HttpPost(serverUrl + "/v1/orders");
            request.setHeader("Content-Type", "application/json");
            request.addHeader("Authorization", authenticationToken);
            request.setEntity(new StringEntity(new Gson().toJson(params)));
 
            HttpResponse response = client.execute(request);
+           if (response.getStatusLine().getStatusCode() != 201) {
+               return null;
+           }
+
            HttpEntity entity = response.getEntity();
-
-
            result = objectMapper.readValue(entity.getContent(), OrderApiResponse.class);
+
         } catch (IOException | NoSuchAlgorithmException e) {
 
             e.printStackTrace();
