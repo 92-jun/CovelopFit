@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,9 +26,9 @@ public class OrderController {
         return "order-page";
     }
 
-    @PostMapping(value = "order")
+    @PostMapping(value = "orders")
     @ResponseBody
-    public CommonResponse postOrder(@ModelAttribute @Valid OrderForm orderForm) {
+    public CommonResponse postOrder(@ModelAttribute @Validated OrderForm orderForm) {
         log.debug(orderForm.toString());
         OrderApiResponse orderApiResponse = orderService.postOrder(orderForm);
 
@@ -37,4 +38,31 @@ public class OrderController {
 
         return new CommonResponse(HttpStatus.OK, "성공", orderApiResponse);
     }
+
+
+    @GetMapping(value = "order")
+    @ResponseBody
+    public CommonResponse getOrder() {
+        OrderApiResponse orderApiResponse = orderService.getOrder();
+
+        if(orderApiResponse == null){
+            return new CommonResponse(HttpStatus.INTERNAL_SERVER_ERROR, "OrderService 내 에러 or API 실패");
+        }
+
+        return new CommonResponse(HttpStatus.OK, "성공", orderApiResponse);
+    }
+
+
+    @DeleteMapping(value = "order/{uuid}")
+    @ResponseBody
+    public CommonResponse deleteOrder(@PathVariable String uuid) {
+        OrderApiResponse orderApiResponse = orderService.deleteOrder(uuid);
+
+        if(orderApiResponse == null){
+            return new CommonResponse(HttpStatus.INTERNAL_SERVER_ERROR, "OrderService 내 에러 or API 실패");
+        }
+
+        return new CommonResponse(HttpStatus.OK, "성공", orderApiResponse);
+    }
+
 }
