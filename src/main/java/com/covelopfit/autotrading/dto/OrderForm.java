@@ -27,7 +27,6 @@ public class OrderForm {
     @Pattern(regexp = "^[a-z]+$")
     private String side;
 
-
     @NotBlank
     @Positive
     @Description("Order Amount. -> 주문량")
