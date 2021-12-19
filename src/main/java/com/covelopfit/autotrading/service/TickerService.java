@@ -17,7 +17,7 @@ public class TickerService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public CommonResponse getTicker(String marketCodes){
+    public TickerApiResponse getTicker(String marketCodes){
 
         TickerApiResponse tickerAPIResResult = new TickerApiResponse();
 
@@ -32,7 +32,7 @@ public class TickerService {
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
             if(response.statusCode() != 200){
-                return new CommonResponse(HttpStatus.valueOf(response.statusCode()), "실패");
+                return null;
             }
 
             String resbody = response.body();
@@ -44,6 +44,6 @@ public class TickerService {
             return null;
         }
 
-        return new CommonResponse(HttpStatus.valueOf(200), "성공", tickerAPIResResult);
+        return tickerAPIResResult;
     }
 }
