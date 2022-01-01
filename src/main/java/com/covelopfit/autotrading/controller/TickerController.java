@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -21,13 +23,13 @@ public class TickerController {
     @ResponseBody
     public CommonResponse getTicker(String marketCodes) {
 
-        TickerApiResponse tickerApiResponse = tickerService.getTicker(marketCodes);
+        List<TickerApiResponse> tickerApiResponseList = tickerService.getTickerList(marketCodes);
 
-        if(tickerApiResponse == null){
+        if(tickerApiResponseList == null){
             return new CommonResponse(HttpStatus.INTERNAL_SERVER_ERROR, "TickerService Exception 발생");
         }
 
-        return new CommonResponse(HttpStatus.OK, "성공", tickerApiResponse);
+        return new CommonResponse(HttpStatus.OK, "성공", tickerApiResponseList);
     }
 
 }

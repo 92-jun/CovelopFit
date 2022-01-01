@@ -11,15 +11,16 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @Service
 public class TickerService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public TickerApiResponse getTicker(String marketCodes){
+    public List<TickerApiResponse> getTickerList(String marketCodes){
 
-        TickerApiResponse tickerAPIResResult = new TickerApiResponse();
+        List<TickerApiResponse> tickerAPIResResult = null;
 
         String upbitURL = "https://api.upbit.com/v1/ticker?markets=" + marketCodes;
 
@@ -35,9 +36,7 @@ public class TickerService {
                 return null;
             }
 
-            String resbody = response.body();
-
-            tickerAPIResResult = objectMapper.readValue(resbody.substring(1,resbody.length()-1), TickerApiResponse.class);
+            tickerAPIResResult = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, TickerApiResponse.class));
 
         }catch (IOException | InterruptedException e) {
             e.printStackTrace();
